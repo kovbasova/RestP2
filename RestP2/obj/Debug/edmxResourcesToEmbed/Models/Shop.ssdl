@@ -11,7 +11,16 @@
     <Property Name="Groups" Type="nvarchar(max)" />
     <Property Name="Stock" Type="float" />
   </EntityType>
+  <EntityType Name="Sales">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Amount" Type="float" Nullable="false" />
+    <Property Name="GoodsId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityContainer Name="ShopModelStoreContainer">
     <EntitySet Name="Goods" EntityType="Self.Goods" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Goods">
           <Key>
             <PropertyRef Name="Id" />
@@ -16,11 +16,19 @@
           <Property Name="Groups" Type="nvarchar(max)" />
           <Property Name="Stock" Type="float" />
         </EntityType>
+        <EntityType Name="Sales">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="GoodsId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="ShopModelStoreContainer">
           <EntitySet Name="Goods" EntityType="Self.Goods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -37,7 +45,33 @@
         </EntityType>
         <EntityContainer Name="ShopEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Goods" EntityType="Self.Goods" />
+          <EntitySet Name="Sales" EntityType="ShopModel.Sales" />
+          <AssociationSet Name="GoodsSales" Association="ShopModel.GoodsSales">
+            <End Role="Goods" EntitySet="Goods" />
+            <End Role="Sales" EntitySet="Sales" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Sales">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Goods" Relationship="ShopModel.GoodsSales" FromRole="Sales" ToRole="Goods" />
+          <Property Name="GoodsId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="GoodsSales">
+          <End Type="ShopModel.Goods" Role="Goods" Multiplicity="1" />
+          <End Type="ShopModel.Sales" Role="Sales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Goods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sales">
+              <PropertyRef Name="GoodsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -53,6 +87,15 @@
                 <ScalarProperty Name="Vendor" ColumnName="Vendor" />
                 <ScalarProperty Name="Groups" ColumnName="Groups" />
                 <ScalarProperty Name="Stock" ColumnName="Stock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sales">
+            <EntityTypeMapping TypeName="ShopModel.Sales">
+              <MappingFragment StoreEntitySet="Sales">
+                <ScalarProperty Name="GoodsId" ColumnName="GoodsId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

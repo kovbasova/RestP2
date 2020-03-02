@@ -13,5 +13,31 @@
   </EntityType>
   <EntityContainer Name="ShopEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Goods" EntityType="Self.Goods" />
+    <EntitySet Name="Sales" EntityType="ShopModel.Sales" />
+    <AssociationSet Name="GoodsSales" Association="ShopModel.GoodsSales">
+      <End Role="Goods" EntitySet="Goods" />
+      <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Sales">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Amount" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Goods" Relationship="ShopModel.GoodsSales" FromRole="Sales" ToRole="Goods" />
+    <Property Name="GoodsId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="GoodsSales">
+    <End Type="ShopModel.Goods" Role="Goods" Multiplicity="1" />
+    <End Type="ShopModel.Sales" Role="Sales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Goods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sales">
+        <PropertyRef Name="GoodsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

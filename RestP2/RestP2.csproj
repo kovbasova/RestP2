@@ -209,6 +209,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -220,6 +221,10 @@
     </Compile>
     <Compile Include="Models\GoodsExends.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Sales.cs">
+      <DependentUpon>Shop.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalesExtends.cs" />
     <Compile Include="Models\Shop.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

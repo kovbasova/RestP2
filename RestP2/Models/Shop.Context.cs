@@ -26,5 +26,6 @@ namespace RestP2.Models
         }
     
         public virtual DbSet<Goods> Goods { get; set; }
+        public virtual DbSet<Sales> Sales { get; set; }
     }
 }
